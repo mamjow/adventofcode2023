@@ -1,5 +1,5 @@
 using System.Text.RegularExpressions;
-using app;
+using App;
 namespace Days;
 
 public class Day2 : ISolve

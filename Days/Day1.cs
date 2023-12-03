@@ -1,6 +1,6 @@
-using System.Collections;
+
 using System.Text.RegularExpressions;
-using app;
+using App;
 namespace Days;
 
 public class Day1 : ISolve
