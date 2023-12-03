@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Text.RegularExpressions;
 using app;
 namespace Days;
@@ -41,7 +40,6 @@ public class Bag
                 };
         }
 
-
         public int GameWasValid(string gameAndPlayes)
         {
                 var gameIdentifier = Regex.Matches(gameAndPlayes, "Game (\\d+):");
@@ -49,7 +47,6 @@ public class Bag
                 var rounds = gameAndPlayes.Split(':')[1].Split(';');
                 foreach (var round in rounds)
                 {
-
                         if (IsValidCubes(round))
                         {
                                 continue;
@@ -80,11 +77,11 @@ public class Bag
                                         leastInContainerToWin.Add(color, number);
                                 }
                         }
-
                 }
                 var gamepower = leastInContainerToWin.Values.Aggregate((a, x) => a * x);
                 return gamepower;
         }
+
         private bool IsValidCubes(string game)
         {
                 var cubes = Regex.Matches(game, "(\\d+) (\\w+)");
