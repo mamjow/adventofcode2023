@@ -1,6 +1,6 @@
-﻿using App;
+﻿
 using Days;
 using AdventOfCode;
 
-AdventOfCodeChallenge.SolveEventChallenge(new Day2());
+AdventOfCodeChallenge.SolveEventChallenge(new Day3());
 Console.ReadLine();
