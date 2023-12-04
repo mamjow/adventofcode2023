@@ -12,7 +12,7 @@ public class Day3 : ISolve
             var lineSchema = input[yLoc];
             var partNumbers = Regex.Matches(lineSchema, "[0-9]+");
 
-            var partNumbersDistinct = partNumbers.Distinct();
+            var partNumbersDistinct = partNumbers.Select(x => x.Value).Distinct();
             foreach (var partNumber in partNumbersDistinct)
             {
                 // if a number been seen more than 1 time?
