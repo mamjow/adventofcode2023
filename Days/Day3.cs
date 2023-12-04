@@ -12,14 +12,7 @@ public class Day3 : ISolve
             var lineSchema = input[yLoc];
             var partNumbers = Regex.Matches(lineSchema, "[0-9]+");
 
-            var allDigits = new List<int>();
-            foreach (var partNumber in partNumbers)
-            {
-                _ = int.TryParse(((Match)partNumber).Value, out var valueDigit);
-                allDigits.Add(valueDigit);
-            }
-
-            var partNumbersDistinct = allDigits.Distinct().ToList();
+            var partNumbersDistinct = partNumbers.Distinct();
             foreach (var partNumber in partNumbersDistinct)
             {
                 // if a number been seen more than 1 time?
@@ -66,6 +59,7 @@ public class Day3 : ISolve
         var initialXloc = xLoc - 1;
         var lentghOfIteration = partNumber.Length + 2;
         var closeIndex = initialXloc + lentghOfIteration;
+
         // what if it was close to vertical edges? out of range index
         // left side
         if (initialXloc < 0)
