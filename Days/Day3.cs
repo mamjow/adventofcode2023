@@ -18,15 +18,16 @@ public class Day3 : ISolve
                 _ = int.TryParse(((Match)partNumber).Value, out var valueDigit);
                 allDigits.Add(valueDigit);
             }
-            var al =  allDigits.Distinct().ToList();
-            foreach (var partNumber in al)
+
+            var partNumbersDistinct = allDigits.Distinct().ToList();
+            foreach (var partNumber in partNumbersDistinct)
             {
-                // if two times?
+                // if a number been seen more than 1 time?
                 var allXLoccation = lineSchema.AllIndexesOf(partNumber.ToString());
 
                 foreach (var xloc in allXLoccation)
                 {
-                    if (ScanVerticalForPart(input, partNumber.ToString(), xloc, yLoc) || ScanHorizontalForPart(input, partNumber.ToString(), xloc, yLoc))
+                    if (ScanTopAndBotBorderForPart(input, partNumber.ToString(), xloc, yLoc) || ScanSideBordersForPart(input, partNumber.ToString(), xloc, yLoc))
                     {
                         list.Add(partNumber.ToString());
                     }
@@ -46,14 +47,28 @@ public class Day3 : ISolve
         return "";
     }
 
-    private static bool ScanVerticalForPart(string[] schema, string partNumber, int xLoc, int yLoc)
+    /// <summary>
+    /// chechs bot and top border with margin od diagonal ones from mid lane 
+    /// 
+    /// checking questions marks
+    /// ??????? 
+    ///  xxxxx
+    /// ???????
+    /// 
+    /// </summary>
+    /// <param name="schema"></param>
+    /// <param name="partNumber"></param>
+    /// <param name="xLoc"></param>
+    /// <param name="yLoc"></param>
+    /// <returns></returns>
+    private static bool ScanTopAndBotBorderForPart(string[] schema, string partNumber, int xLoc, int yLoc)
     {
         var initialXloc = xLoc - 1;
         var lentghOfIteration = partNumber.Length + 2;
         var closeIndex = initialXloc + lentghOfIteration;
-        // what if it was close to vertical edges? out of index
+        // what if it was close to vertical edges? out of range index
         // left side
-        if (initialXloc <= 0)
+        if (initialXloc < 0)
         {
             initialXloc = 0;
         }
@@ -62,16 +77,16 @@ public class Day3 : ISolve
         if (closeIndex > schema[yLoc].Length)
         {
             closeIndex -= 1;
-
         }
 
         var botRow = "";
         var topRow = "";
+        // so its not last row
         if (schema.Length > yLoc + 1)
         {
             botRow = schema[yLoc + 1][initialXloc..closeIndex];
         }
-
+        // its not firstio row
         if (yLoc != 0)
         {
             topRow = schema[yLoc - 1][initialXloc..closeIndex];
@@ -82,9 +97,14 @@ public class Day3 : ISolve
 
     /// <summary>
     ///  so sidways , the diagonal will be check in v
+    ///  
+    ///  xxxxx
+    ///  ?<n>?
+    ///  xxxxx
+    ///  
     /// </summary>
     /// <returns></returns>
-    private static bool ScanHorizontalForPart(string[] schema, string partNumber, int xLoc, int yLoc)
+    private static bool ScanSideBordersForPart(string[] schema, string partNumber, int xLoc, int yLoc)
     {
         var initialXloc = xLoc - 1;
         var lentghOfIteration = partNumber.Length + 2;
