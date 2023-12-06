@@ -10,19 +10,21 @@ public class Day3 : ISolve
         for (int yLoc = 0; yLoc < input.Length; yLoc++)
         {
             var lineSchema = input[yLoc];
-            var partNumbers = Regex.Matches(lineSchema, "[0-9]+");
+            var partNumbers = Regex.Matches(lineSchema, "\\d+");
 
             var partNumbersDistinct = partNumbers.Select(x => x.Value).Distinct();
             foreach (var partNumber in partNumbersDistinct)
             {
                 // if a number been seen more than 1 time?
-                var allXLoccation = lineSchema.AllIndexesOf(partNumber.ToString());
+                var allXLocations = Regex.Matches(lineSchema, @$"\d+")
+                    .Where(x => x.Value.ToString() == partNumber)
+                    .Select(x => x.Index);
 
-                foreach (var xloc in allXLoccation)
+                foreach (var xloc in allXLocations)
                 {
-                    if (ScanTopAndBotBorderForPart(input, partNumber.ToString(), xloc, yLoc) || ScanSideBordersForPart(input, partNumber.ToString(), xloc, yLoc))
+                    if (ScanTopAndBotBorderForSymbol(input, partNumber, xloc, yLoc) || ScanSideBordersForSymbol(input, partNumber, xloc, yLoc))
                     {
-                        list.Add(partNumber.ToString());
+                        list.Add(partNumber);
                     }
                 }
             }
@@ -30,7 +32,7 @@ public class Day3 : ISolve
 
         return list.Select(x =>
         {
-            _ = int.TryParse(x, out int dig);
+            _ = long.TryParse(x, out var dig);
             return dig;
         }).Sum().ToString();
     }
@@ -54,7 +56,7 @@ public class Day3 : ISolve
     /// <param name="xLoc"></param>
     /// <param name="yLoc"></param>
     /// <returns></returns>
-    private static bool ScanTopAndBotBorderForPart(string[] schema, string partNumber, int xLoc, int yLoc)
+    private static bool ScanTopAndBotBorderForSymbol(string[] schema, string partNumber, int xLoc, int yLoc)
     {
         var initialXloc = xLoc - 1;
         var lentghOfIteration = partNumber.Length + 2;
@@ -85,7 +87,12 @@ public class Day3 : ISolve
         {
             topRow = schema[yLoc - 1][initialXloc..closeIndex];
         }
-        var res = Regex.Match(botRow, "[^.0-9\n]").Success || Regex.Match(topRow, "[^.0-9\n]").Success;
+        var res = Regex.Match(botRow, "[^.\\d\n]").Success || Regex.Match(topRow, "[^.\\d\n]").Success;
+        // if(res){
+        //     var s = Regex.Match(botRow, "[^.0-9]").Success ? botRow : "" ;
+        //     var s1 = Regex.Match(topRow, "[^.0-9]").Success ? topRow : "" ;
+        //     Console.WriteLine($"{yLoc} - {partNumber} , {s1}  ANDBOT   {s}");
+        // }
         return res;
     }
 
@@ -98,7 +105,7 @@ public class Day3 : ISolve
     ///  
     /// </summary>
     /// <returns></returns>
-    private static bool ScanSideBordersForPart(string[] schema, string partNumber, int xLoc, int yLoc)
+    private static bool ScanSideBordersForSymbol(string[] schema, string partNumber, int xLoc, int yLoc)
     {
         var initialXloc = xLoc - 1;
         var lentghOfIteration = partNumber.Length + 2;
@@ -111,13 +118,14 @@ public class Day3 : ISolve
         }
 
         // right side
-        if (closeIndex > schema[yLoc].Length)
+        if (closeIndex >= schema[yLoc].Length)
         {
             closeIndex -= 1;
 
         }
         var with1Margin = schema[yLoc][initialXloc..closeIndex];
-        return Regex.Match(with1Margin, "[^.0-9\n]").Success;
+        var res = Regex.Match(with1Margin, "[^.\\d\n]").Success;
+        return res;
     }
 
 }
