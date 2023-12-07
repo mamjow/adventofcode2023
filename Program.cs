@@ -2,5 +2,5 @@
 using Days;
 using AdventOfCode;
 
-AdventOfCodeChallenge.SolveEventChallenge(new Day3());
+AdventOfCodeChallenge.SolveEventChallenge(new Day4());
 Console.ReadLine();
