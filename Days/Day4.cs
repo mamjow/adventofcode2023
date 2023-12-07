@@ -32,7 +32,6 @@ public class Day4 : ISolve
         {
             var cards = Regex.Match(input[i], "^Card\\s+\\d+: (.+)$");
             var CardDeck = i + 1;
-            // var winingCards = card.
             var allCards = cards.Groups[1].Value.Split("|").Select(
                 x => x.Split(" ").Where(s => !string.IsNullOrWhiteSpace(s)
             )).ToList();
@@ -47,6 +46,7 @@ public class Day4 : ISolve
                 totalCopies.AddRange(Enumerable.Repeat(nd, instancesOfCard));
             }
         }
-        return (input.Length + totalCopies.Count()).ToString();
+        points = input.Length + totalCopies.Count();
+        return points.ToString();
     }
 }
